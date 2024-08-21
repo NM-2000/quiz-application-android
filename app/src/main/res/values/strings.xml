@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Quiz Application</string>
+    <string name="quiz_application">Quiz\nUniverse</string>
+    <string name="start_quiz">Start Quiz</string>
+    <string name="add_question">Add Question</string>
+    <string name="create_quiz">Create Quiz</string>
+</resources>
