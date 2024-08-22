@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -26,18 +27,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.quizapplication.add.question.viewmodel.AddQuestionScreenViewModel
 
 @Composable
 fun AddQuestionScreen(
+    navHostController: NavHostController,
     viewModel: AddQuestionScreenViewModel
 ) {
     val question by viewModel.question.collectAsStateWithLifecycle()
+    val category by viewModel.category.collectAsStateWithLifecycle()
     val option1 by viewModel.option1.collectAsStateWithLifecycle()
     val option2 by viewModel.option2.collectAsStateWithLifecycle()
     val option3 by viewModel.option3.collectAsStateWithLifecycle()
     val option4 by viewModel.option4.collectAsStateWithLifecycle()
     val selectedOption by viewModel.selectedOption.collectAsStateWithLifecycle()
+    val dismiss by viewModel.dismiss.collectAsStateWithLifecycle()
+    
+    LaunchedEffect(key1 = dismiss) {
+        if (dismiss) {
+            navHostController.navigateUp()
+        }
+    }
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,6 +69,29 @@ fun AddQuestionScreen(
             placeholder = {
                 Text(
                     text = "Type the Question ...",
+                    style = TextStyle.Default.copy(
+                        color = Color.Black,
+                        letterSpacing = 0.6.sp
+                    )
+                )
+            },
+            maxLines = 1,
+            colors = TextFieldDefaults.colors().copy(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                focusedIndicatorColor = Color.DarkGray,
+                unfocusedIndicatorColor = Color.Gray,
+                cursorColor = Color.DarkGray
+            )
+        )
+        Spacer(modifier = Modifier.size(32.dp))
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = category,
+            onValueChange = viewModel::onTypingCategory,
+            placeholder = {
+                Text(
+                    text = "Type the Category ...",
                     style = TextStyle.Default.copy(
                         color = Color.Black,
                         letterSpacing = 0.6.sp

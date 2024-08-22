@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddQuestionScreenViewModel @Inject constructor(
-    val questionApiService: QuestionApiService
+    private val questionApiService: QuestionApiService
 ) : ViewModel() {
 
     private val _selectedOption = MutableStateFlow(1)
@@ -18,6 +18,9 @@ class AddQuestionScreenViewModel @Inject constructor(
 
     private val _question = MutableStateFlow("")
     val question: StateFlow<String> = _question
+
+    private val _category = MutableStateFlow("")
+    val category: StateFlow<String> = _category
 
     private val _option1 = MutableStateFlow("")
     val option1: StateFlow<String> = _option1
@@ -31,12 +34,19 @@ class AddQuestionScreenViewModel @Inject constructor(
     private val _option4 = MutableStateFlow("")
     val option4: StateFlow<String> = _option4
 
+    private val _dismiss = MutableStateFlow(false)
+    val dismiss: StateFlow<Boolean> = _dismiss
+
     fun onSelectOption(option: Int) {
         _selectedOption.value = option
     }
 
     fun onTypingQuestion(question: String) {
         _question.value = question
+    }
+
+    fun onTypingCategory(category: String) {
+        _category.value = category
     }
 
     fun onTypingOption(option: String, optionNumber: Int) {
@@ -65,10 +75,12 @@ class AddQuestionScreenViewModel @Inject constructor(
                 option3 = _option3.value,
                 option4 = _option4.value,
                 answer = fetchAnswer(),
-                category = "GK",
+                category = _category.value,
                 difficultyLevel = "Easy"
             )
-        )
+        ) {
+            _dismiss.value = true
+        }
     }
 
     private fun fetchAnswer(): String {

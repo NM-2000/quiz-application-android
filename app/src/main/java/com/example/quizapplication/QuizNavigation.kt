@@ -33,7 +33,7 @@ import com.example.quizapplication.util.NavigationRoute
             route = NavigationRoute.ADD_QUESTION.route
         ) {
             val viewModel: AddQuestionScreenViewModel = hiltViewModel()
-            AddQuestionScreen(viewModel)
+            AddQuestionScreen(navHostController = navController, viewModel = viewModel)
         }
 
         composable(

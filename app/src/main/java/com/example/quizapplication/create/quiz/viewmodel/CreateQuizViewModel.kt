@@ -22,6 +22,9 @@ class CreateQuizViewModel @Inject constructor(
     private val _numOfQuestions = MutableStateFlow("")
     val numOfQuestions: StateFlow<String> = _numOfQuestions
 
+    private val _dismiss = MutableStateFlow(false)
+    val dismiss: StateFlow<Boolean> = _dismiss
+
     fun onEditCategory(category: String) {
         _category.value = category
     }
@@ -41,7 +44,9 @@ class CreateQuizViewModel @Inject constructor(
                 _title.value,
                 _numOfQuestions.value.toIntOrNull() ?: 1
             )
-        )
+        ) {
+            _dismiss.value = true
+        }
     }
 
 }

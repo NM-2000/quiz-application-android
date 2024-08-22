@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class CreateQuizApiService @Inject constructor() {
 
-    fun createQuiz(createQuizDto: CreateQuizDto) {
+    fun createQuiz(createQuizDto: CreateQuizDto, onResult: () -> Unit) {
         val retrofit = ServiceBuilder.buildService(CreateQuizApi::class.java)
         retrofit.createQuiz(
             createQuizDto.category,
@@ -20,6 +20,7 @@ class CreateQuizApiService @Inject constructor() {
             object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
+                        onResult()
                         Log.e("Quiz_Log", "Quiz successfully created!")
                     } else {
                         Log.e("Quiz_Log", "Quiz creation response code: ${response.code()}")
